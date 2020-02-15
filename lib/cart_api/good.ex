@@ -8,7 +8,6 @@ defmodule CartApi.Good do
     field :description, :string
     field :img, :string
     field :name, :string
-    many_to_many(:carts, Cart, join_through: "cart_goods")
 
     timestamps()
   end

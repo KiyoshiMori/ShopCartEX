@@ -4,7 +4,7 @@ defmodule CartApi.Cart do
   alias CartApi.{Good, Cart, Repo, CartGoods}
 
   schema "carts" do
-    field :user_id, :string
+    field :user_id, :integer
     many_to_many(:goods, Good, join_through: "cart_goods")
 
     timestamps()
@@ -23,10 +23,16 @@ defmodule CartApi.Cart do
   end
 
   def add_to_cart(cart_id, goods) do
-    res = %Cart{}
-    |> cast(%{id: cart_id}, [:id])
-    |> put_assoc(:goods, goods)
+    cart = Repo.get(Cart, cart_id)
+    |> Repo.preload(:goods)
 
-    Repo.insert(res)
+    new_goods = Enum.map(goods, fn x -> struct(Good, x) end)
+
+    updated = cart.goods ++ new_goods
+
+    res = cart
+    |> cast(%{}, [])
+    |> put_assoc(:goods, updated)
+    |> Repo.update
   end
 end
