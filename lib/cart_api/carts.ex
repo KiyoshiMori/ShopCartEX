@@ -22,6 +22,11 @@ defmodule CartApi.Cart do
     |> Repo.preload(:goods)
   end
 
+  def get_cart(cart_id) do
+    Repo.get(Cart, cart_id)
+    |> Repo.preload(:goods)
+  end
+
   def add_to_cart(cart_id, good_id) do
     cart = Repo.get(Cart, cart_id)
     |> Repo.preload(:goods)

@@ -14,6 +14,11 @@ defmodule CartApi.Schema do
       resolve &Main.get_carts/3
     end
 
+    field :get_cart, :cart do
+      arg :cart_id, :integer
+      resolve &Main.get_cart/3
+    end
+
     field :get_goods, list_of(:good) do
       resolve &Main.get_goods/3
     end
