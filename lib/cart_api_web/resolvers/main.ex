@@ -18,4 +18,8 @@ defmodule CartApi.Resolvers.Main do
       nil -> {:error, "error"}
     end
   end
+
+  def get_goods(_, _, _) do
+    {:ok, CartApi.Good.get_goods()}
+  end
 end

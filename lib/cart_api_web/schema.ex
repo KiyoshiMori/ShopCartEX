@@ -13,6 +13,10 @@ defmodule CartApi.Schema do
     field :get_carts, list_of(:cart) do
       resolve &Main.get_carts/3
     end
+
+    field :get_goods, list_of(:good) do
+      resolve &Main.get_goods/3
+    end
   end
 
   mutation do

@@ -1,6 +1,7 @@
 defmodule CartApi.Good do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
   alias CartApi.{Cart, Good, Repo}
 
@@ -17,6 +18,12 @@ defmodule CartApi.Good do
     good
     |> cast(attrs, [:name, :description, :img])
     |> validate_required([:name, :description, :img])
+  end
+
+  def get_goods() do
+    Good
+    |> order_by([g], g.id)
+    |> Repo.all()
   end
 
   def create_good(good) do
