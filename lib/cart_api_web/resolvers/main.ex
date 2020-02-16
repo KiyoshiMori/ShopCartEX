@@ -3,11 +3,18 @@ defmodule CartApi.Resolvers.Main do
     {:ok, CartApi.Cart.get_carts()}
   end
 
-  def add_to_cart(_, %{input: %{cart_id: id, goods: goods}}, _) do
-    case CartApi.Cart.add_to_cart(id, goods) do
-      {:ok, res} ->
-        IO.inspect(res)
-        {:ok, res}
+  def add_to_cart(_, %{input: %{cart_id: id, good_id: good_id}}, _) do
+    case CartApi.Cart.add_to_cart(id, good_id) do
+      {:error, err} -> {:error, err}
+      {:ok, res} -> {:ok, res}
+      nil -> {:error, "error"}
+    end
+  end
+
+  def create_good(_, %{input: good}, _) do
+    case CartApi.Good.create_good(good) do
+      {:error, err} -> {:error, err}
+      {:ok, res} -> {:ok, res}
       nil -> {:error, "error"}
     end
   end

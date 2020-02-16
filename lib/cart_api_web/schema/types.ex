@@ -20,7 +20,7 @@ defmodule CartApi.Schema.Types do
   end
 
   input_object :cart_input do
-    field :goods, list_of(:good_input)
+    field :good_id, :integer
     field :cart_id, :id
   end
 end

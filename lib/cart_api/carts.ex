@@ -22,17 +22,30 @@ defmodule CartApi.Cart do
     |> Repo.preload(:goods)
   end
 
-  def add_to_cart(cart_id, goods) do
+  def add_to_cart(cart_id, good_id) do
     cart = Repo.get(Cart, cart_id)
     |> Repo.preload(:goods)
+    case(cart) do
+      nil -> {:error, "cart not exist"}
+      _ ->
+        is_exist = Enum.any?(cart.goods, fn good ->
+          good_id == good.id
+        end)
 
-    new_goods = Enum.map(goods, fn x -> struct(Good, x) end)
+        case(is_exist) do
+          true -> {:error, "good already at cart"}
+          false ->
+            case(Repo.get(Good, good_id)) do
+              nil -> {:error, "good not found"}
+              found ->
+                updated = [found | cart.goods]
 
-    updated = cart.goods ++ new_goods
-
-    res = cart
-    |> cast(%{}, [])
-    |> put_assoc(:goods, updated)
-    |> Repo.update
+                cart
+                |> cast(%{}, [])
+                |> put_assoc(:goods, updated)
+                |> Repo.update
+            end
+        end
+    end
   end
 end

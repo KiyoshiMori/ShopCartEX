@@ -2,7 +2,7 @@ defmodule CartApi.Good do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias CartApi.{Cart}
+  alias CartApi.{Cart, Good, Repo}
 
   schema "goods" do
     field :description, :string
@@ -17,5 +17,11 @@ defmodule CartApi.Good do
     good
     |> cast(attrs, [:name, :description, :img])
     |> validate_required([:name, :description, :img])
+  end
+
+  def create_good(good) do
+    %Good{}
+    |> cast(good, [:name])
+    |> Repo.insert
   end
 end
